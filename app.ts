@@ -57,7 +57,7 @@ async function webhook(request: Request) {
     const hoge = (n: number) => {
         let result = "";
         let a = 1;
-        for (let i = 1; i < n; i++) {
+        for (let i = 1; i <= n; i++) {
             a *= i;
             result += `${a}\n`;
         }
