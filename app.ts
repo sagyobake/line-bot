@@ -1,3 +1,4 @@
+
 import { serve } from "https://deno.land/std@0.117.0/http/server.ts";
 
 const accessToken = Deno.env.get("ACCESS_TOKEN");
@@ -53,8 +54,14 @@ async function webhook(request: Request) {
         return new Response("OK");
     }
 
-    const hoge = (n:number) => {
-        return n ** 2;
+    const hoge = (n: number) => {
+        let result = "";
+        let a = 1;
+        for (let i = 1; i < n; i++) {
+            a *= i;
+            result += `${a}\n`;
+        }
+        return result;
     }
 
 
