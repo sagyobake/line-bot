@@ -1,6 +1,6 @@
 let yoho = 'hogehoge';
 
-await fetch('https://weather.tsukumijima.net/api/forecast/city/130010')
+fetch('https://weather.tsukumijima.net/api/forecast/city/130010')
     .then(response => response.json())
     .then(data => {
 
