@@ -1,52 +1,28 @@
-const tenki_url = "https://map.yahooapis.jp/weather/V1/place?output=json&coordinates=139.50766992096874,35.60448371439913&appid=dj00aiZpPWZNWjMwWWdvenNJWSZzPWNvbnN1bWVyc2VjcmV0Jng9NWQ-"
+const url = 'https://discord.com/api/webhooks/1329054269617340437/md41TsLSDH8WTLwFIwYn7p9cDReVw3hQ_E1lz_fpLdy97_C_8xZ3oxlTVIWc0c9endgU';
 
-let veryLongText = ''; // 細切れの値をここに結合していく。
-const decoder = new TextDecoder();
+let yoho = 'hogehoge';
+
+'use strict';
+
+await fetch('https://weather.tsukumijima.net/api/forecast/city/130010')
+    .then(response => response.json())
+    .then(data => {
+
+        //console.log(data);
+
+        const date = data['forecasts'][0]['date'];
+        const telop = data['forecasts'][0]['telop'];
+        console.log(date);
+        console.log(telop);
 
 
-let yoho = 'a';
+        yoho = `${date}\n${telop}`;
 
 
-await fetch(tenki_url)
-    .then((response) => response.body.getReader()) // ReadableStreamを取得する。
-    .then((reader) => {
-        // ReadableStream.read()はPromiseを返す。
-        // Promiseは{ done, value }として解決される。
-        // データを読み込んだとき：doneはfalse, valueは値。
-        // データを読み込み終わったとき：doneはtrue, valueはundefined。
-        async function readChunk({ done, value }) {
-            if (done) {
-                // 読み込みが終わっていれば最終的なテキストを表示する。
-                const data = JSON.parse(veryLongText);
-                //console.log(data);
-
-                const w = data['Feature'];
-
-                const weather = w[0]['Property']['WeatherList']['Weather'];
-
-                //console.log(weather); //一時間の天気予報が入った配列
-
-                for (const value in weather) {
-                    console.log(weather[value]['Rainfall']);
-                }
-
-                //console.log(yoho);
-
-                return;
-            }
-
-            const a = decoder.decode(value);
-            veryLongText += a;
-
-            // 次の値を読みにいく。
-            reader.read().then(readChunk);
-        }
-
-        // 最初の値を読み込む。
-        reader.read().then(readChunk);
+    })
+    .catch(error => {
+        console.error('エラー:', error);
     });
-
-
 
 
 import { serve } from "https://deno.land/std@0.117.0/http/server.ts";
