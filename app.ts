@@ -68,17 +68,6 @@ async function webhook(request: Request) {
         return new Response("OK");
     }
 
-    const hoge = (n: number) => {
-        let result = "";
-        let a = 1;
-        for (let i = 1; i <= n; i++) {
-            a *= i;
-            result += `${a}\n`;
-        }
-        return result;
-    }
-
-
     const res = await fetch("https://api.line.me/v2/bot/message/reply", {
         method: "POST",
         headers: {
@@ -89,20 +78,13 @@ async function webhook(request: Request) {
             replyToken: event.events[0].replyToken,
             messages: [
                 {
-                    type: "text",
-                    text: hoge(Number(event.events[0].message.text)),
-                },
-
-
-                {
                     type: 'text',
                     text: yoho,
                 },
-
-
             ],
         }),
     });
     await res.arrayBuffer();
     return new Response("OK");
 }
+webhook();
