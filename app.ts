@@ -21,80 +21,38 @@ await fetch('https://weather.tsukumijima.net/api/forecast/city/130010')
     });
 
 
+import type { Handlers, FreshContext } from "$fresh/server.ts";
+import { messagingApi, MessageEvent } from "npm:@line/bot-sdk@8.4.0";
+import type { ClientConfig, TextEventMessage } from "npm:@line/bot-sdk@8.4.0";
+import OpenAI from "https://deno.land/x/openai@v4.33.1/mod.ts";
 
+const config: ClientConfig = {
+    channelAccessToken: "YOUR_CHANNEL_ACCESS_TOKEN",
+    channelSecret: "YOUR_CHANNEL_SECRET",
+};
+const client = new messagingApi.MessagingApiClient(config);
 
-import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
-import {
-    messagingApi,
-    SignatureValidationFailed,
-    validateSignature,
-    type WebhookRequestBody,
-} from "npm:@line/bot-sdk@9.2.2";
+const ai = new OpenAI();
 
-// LINE bot SDKの初期化
-const CHANNEL_SECRET = Deno.env.get("CHANNEL_SECRET")!;
-const client = new messagingApi.MessagingApiClient({
-    channelAccessToken: Deno.env.get("CHANNEL_ACCESS_TOKEN")!,
-});
-
-// Honoの初期化
-const app = new Hono();
-
-app.get("/", (c) => c.text("hello world"));
-
-// https://<ドメイン>/webhookに対するPOSTリクエストを受け付け
-app.post("/webhook", async (c) => {
-    // リクエストがLINEプラットフォームから送られたことを確認し、bodyをパース
-    const request = await validateAndParseRequest(c.req);
-    console.log(request);
-
-    for (const event of request.events) {
-        // メッセージイベントのみ処理する
-        if (event.type !== "message" || event.message.type !== "text") {
-            continue;
-        }
-
-        // event.message.textの中に受信したメッセージが入っている
-        console.log(event.message.text);
-
-        // LINE bot SDKを用いて返信する
+export const handler: Handlers = {
+    async POST(_req: Request, _ctx: FreshContext): Promise<Response> {
+        const body = await _req.json();
+        const event: MessageEvent = body.events[0];
+        const textMessage = event.message as TextEventMessage;
+        const chatCompletion = await ai.chat.completions.create({
+            messages: [{ role: "user", content: `あなたは何でも知ってる物知り博士です。次の"#動物の名称"欄に記載される動物の生態を詳しく教えてください。ただし、"#動物の名称"欄に動物の名称ではないものが記載された場合は、"それは動物の名称ではありません"と回答してください。\n\n#動物の名称: ${textMessage.text}` }],
+            model: "gpt-4-1106-preview",
+        });
+        const completion = chatCompletion.choices[0].message.content;
         await client.replyMessage({
             replyToken: event.replyToken,
-            messages: [{ type: "text", text: reply(event.message.text) }],
+            messages: [
+                {
+                    type: "text",
+                    text: completion,
+                },
+            ],
         });
+        return new Response(null, { status: 204 });
     }
-
-    return c.json({ status: "success" });
-});
-
-/**
- * リクエストを検証してbodyをパースする
- * Note:リクエストがLINEプラットフォームから送られたことを確認するために、ボットサーバーでリクエストヘッダーのx-line-signatureに含まれる署名を検証します。
- * ref: https://developers.line.biz/ja/reference/messaging-api/#signature-validation
- */
-async function validateAndParseRequest(req: HonoRequest) {
-    // bodyを取得
-    const body = await req.text();
-    // x-line-signatureヘッダーを取得
-    const signature = req.header("x-line-signature")!;
-    // 署名を検証し、LINEから送られたものではないと判断したらエラーを投げる
-    if (!validateSignature(body, CHANNEL_SECRET, signature)) {
-        throw new SignatureValidationFailed("signature validation failed", {
-            signature,
-        });
-    }
-    // bodyをパースして返す
-    return JSON.parse(body) as WebhookRequestBody;
-}
-
-/**
- * 受信したメッセージに対する返信を作成する
- * @param message 受信したメッセージ
- * @returns 返信する文字列
- */
-function reply(message: string) {
-    // 現在はオウム返し（受信した内容をそのまま返信）
-    return message;
-}
-
-export default app;
+};
