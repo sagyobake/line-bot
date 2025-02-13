@@ -24,7 +24,7 @@ await fetch(tenki_url)
         const weather = w[0]['Property']['WeatherList']['Weather'];
 
         console.log(weather); //一時間の天気予報が入った配列
-        yoho = weather;
+        yoho = JSON.stringify(weather);
 
         return;
       }
@@ -124,14 +124,12 @@ async function webhook(request: Request) {
         },
 
 
-        /*
         {
           type: 'text',
           text: yoho,
         },
-        */
 
-        /*
+        
         {
           type: "text",
           text: "Reply from Deno Deploy beta3",
