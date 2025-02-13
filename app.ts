@@ -130,11 +130,6 @@ async function webhook(request: Request) {
         },
 
         
-        {
-          type: "text",
-          text: "Reply from Deno Deploy beta3",
-        },
-        */
       ],
     }),
   });
