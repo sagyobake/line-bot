@@ -74,22 +74,18 @@ async function webhook(request: Request) {
         body: JSON.stringify({
             replyToken: event.events[0].replyToken,
             messages: [
-                {
-                    type: 'text',
-                    text: 'はじめまして、代表のYuyaと申します。\nご年齢を入力してください。',
-                },
 
                 {
                     type: "text",
                     text: hoge(event.events[0].message.text),
                 },
 
-                /*
+                
                 {
                   type: "text",
                   text: "Reply from Deno Deploy beta3",
                 },
-                */
+                
             ],
         }),
     });
