@@ -4,7 +4,7 @@ let veryLongText = ''; // 細切れの値をここに結合していく。
 const decoder = new TextDecoder();
 
 
-let yoho = '';
+let yoho = 'a';
 
 
 await fetch(tenki_url)
