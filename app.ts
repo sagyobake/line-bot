@@ -123,10 +123,13 @@ async function webhook(request: Request) {
           text: hoge(Number(event.events[0].message.text)),
         },
 
+
+        /*
         {
           type: 'text',
           text: yoho,
         },
+        */
 
         /*
         {
