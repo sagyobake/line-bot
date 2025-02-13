@@ -1,40 +1,106 @@
-const url = 'https://discord.com/api/webhooks/1329054269617340437/md41TsLSDH8WTLwFIwYn7p9cDReVw3hQ_E1lz_fpLdy97_C_8xZ3oxlTVIWc0c9endgU';
 
-const tenki_url = "https://map.yahooapis.jp/weather/V1/place?output=json&coordinates=139.50766992096874,35.60448371439913&appid=dj00aiZpPWZNWjMwWWdvenNJWSZzPWNvbnN1bWVyc2VjcmV0Jng9NWQ-"
+import { serve } from "https://deno.land/std@0.117.0/http/server.ts";
+
+const accessToken = Deno.env.get("ACCESS_TOKEN");
+const channelSecret = Deno.env.get("CHANNEL_SECRET");
+
+function indexPage() {
+    return new Response(`This is an example LINE bot implementation
+See https://github.com/kt3k/line-bot-deno-deploy for details`);
+}
+
+function notFoundPage() {
+    return new Response("404 Not Found", { status: 404 });
+}
+
+const enc = new TextEncoder();
+const algorithm = { name: "HMAC", hash: "SHA-256" };
+
+async function hmac(secret: string, body: string) {
+    const key = await crypto.subtle.importKey(
+        "raw",
+        enc.encode(secret),
+        algorithm,
+        false,
+        ["sign", "verify"],
+    );
+    const signature = await crypto.subtle.sign(
+        algorithm.name,
+        key,
+        enc.encode(body),
+    );
+    return btoa(String.fromCharCode(...new Uint8Array(signature)));
+}
+
+async function webhook(request: Request) {
+    if (!accessToken) {
+        throw new Error("ACCESS_TOKEN is not set");
+    }
+    if (!channelSecret) {
+        throw new Error("CHANNEL_SECRET is not set");
+    }
+
+    const json = await request.text();
+    const digest = await hmac(channelSecret, json);
+    const signature = request.headers.get("x-line-signature");
+
+    if (digest !== signature) {
+        return new Response("Bad Request", { status: 400 });
+    }
+
+    const event = JSON.parse(json);
+    console.log(event);
+    if (event.events.length === 0) {
+        return new Response("OK");
+    }
+
+    const hoge = (n: number) => {
+        let result = "";
+        let a = 1;
+        for (let i = 1; i <= n; i++) {
+            a *= i;
+            result += `${a}\n`;
+        }
+        return result;
+    }
 
 
-
-app.post('/webhook', async c => {
-    const data = await c.req.json() // WebHookデータ
-  
-    const replys: Promise<Response>[] = []
-    for (const event of data.events) {
-      // イベントでループ
-      if (event.type !== 'message') return // メッセージでないイベントは無視
-  
-      const { message, replyToken } = event
-  
-      if (message.type !== 'text') return // テキストメッセージでないイベントは無視
-  
-      const textMessage: string = message.text // ユーザーの発言を取得
-  
-      const replyData = {
-        replyToken,
-        messages: [{
-          type: "text",
-          text: `あなたはさっき、${textMessage}と言った！`
-        }],
-      } // リプライするデータを作成
-      replys.push(fetch("https://api.line.me/v2/bot/message/reply", {
+    const res = await fetch("https://api.line.me/v2/bot/message/reply", {
         method: "POST",
         headers: {
-          "Content-type": "application/json",
-          "Authorization": "Bearer " + Deno.env.get("LINE_TOKEN"),
+            "content-type": "application/json",
+            "authorization": `Bearer ${accessToken}`,
         },
-        "body": JSON.stringify(replyData),
-      })) // リプライ
+        body: JSON.stringify({
+            replyToken: event.events[0].replyToken,
+            messages: [
+                {
+                    type: "text",
+                    text: hoge(Number(event.events[0].message.text)),
+                },
+
+                /*
+                {
+                  type: "text",
+                  text: "Reply from Deno Deploy beta3",
+                },
+                */
+            ],
+        }),
+    });
+    await res.arrayBuffer();
+    return new Response("OK");
+}
+
+serve((request) => {
+    const { pathname } = new URL(request.url);
+
+    switch (pathname) {
+        case "/":
+            return indexPage();
+        case "/webhook":
+            return webhook(request);
+        default:
+            return notFoundPage();
     }
-    await Promise.all(replys) // 全てのリプライ完了を待つ
-  
-    return c.text('OK')
-  })
+});
