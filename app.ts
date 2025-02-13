@@ -27,15 +27,6 @@ import { serve } from "https://deno.land/std@0.117.0/http/server.ts";
 const accessToken = Deno.env.get("ACCESS_TOKEN");
 const channelSecret = Deno.env.get("CHANNEL_SECRET");
 
-function indexPage() {
-    return new Response(`This is an example LINE bot implementation
-See https://github.com/kt3k/line-bot-deno-deploy for details`);
-}
-
-function notFoundPage() {
-    return new Response("404 Not Found", { status: 404 });
-}
-
 const enc = new TextEncoder();
 const algorithm = { name: "HMAC", hash: "SHA-256" };
 
@@ -115,16 +106,3 @@ async function webhook(request: Request) {
     await res.arrayBuffer();
     return new Response("OK");
 }
-
-serve((request) => {
-    const { pathname } = new URL(request.url);
-
-    switch (pathname) {
-        case "/":
-            return indexPage();
-        case "/webhook":
-            return webhook(request);
-        default:
-            return notFoundPage();
-    }
-});
