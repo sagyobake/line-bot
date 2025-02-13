@@ -87,4 +87,10 @@ async function webhook(request: Request) {
     await res.arrayBuffer();
     return new Response("OK");
 }
-webhook();
+
+await Deno.cron("Run once a minute", "* * * * *", async () => {
+    console.log("Hello, cron!");
+    await webhook();
+});
+
+
