@@ -1,8 +1,4 @@
-const url = 'https://discord.com/api/webhooks/1329054269617340437/md41TsLSDH8WTLwFIwYn7p9cDReVw3hQ_E1lz_fpLdy97_C_8xZ3oxlTVIWc0c9endgU';
-
 let yoho = 'hogehoge';
-
-'use strict';
 
 await fetch('https://weather.tsukumijima.net/api/forecast/city/130010')
     .then(response => response.json())
@@ -23,6 +19,7 @@ await fetch('https://weather.tsukumijima.net/api/forecast/city/130010')
     .catch(error => {
         console.error('エラー:', error);
     });
+
 
 
 import { serve } from "https://deno.land/std@0.117.0/http/server.ts";
