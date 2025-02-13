@@ -55,13 +55,13 @@ async function webhook(request: Request) {
     }
 
     const hoge = (n: number) => {
-        let result = "";
-        let a = 1;
-        for (let i = 1; i <= n; i++) {
-            a *= i;
-            result += `${a}\n`;
+        let msg = '';
+        if (n < 18) {
+            msg = '18歳未満の対応は受け付けておりません。'
+        } else {
+            msg = '続いて、性別と現在の職業を記入ください。'
         }
-        return result;
+        return msg;
     }
 
 
@@ -75,8 +75,13 @@ async function webhook(request: Request) {
             replyToken: event.events[0].replyToken,
             messages: [
                 {
+                    type: 'text',
+                    text: 'はじめまして、代表のYuyaと申します。\nご年齢を入力してください。',
+                },
+
+                {
                     type: "text",
-                    text: hoge(Number(event.events[0].message.text)),
+                    text: hoge(event.events[0].message.text),
                 },
 
                 /*
