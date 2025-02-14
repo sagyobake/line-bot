@@ -50,8 +50,9 @@ app.post("/webhook", async (c) => {
     console.log(request);
 
     for (const event of request.events) {
-        let question = questionGenerator()[0];
-        let answer = questionGenerator()[1];
+        let hoge = questionGenerator();
+        let question = hoge[0];
+        let answer = hoge[1];
         let result = question;
 
         // メッセージイベントのみ処理する
