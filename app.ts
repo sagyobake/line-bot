@@ -1,28 +1,22 @@
-let yoho = 'hogehoge';
+let yoho = "hogehoge";
 
-fetch('https://weather.tsukumijima.net/api/forecast/city/130010')
-    .then(response => response.json())
-    .then(data => {
-
+fetch("https://weather.tsukumijima.net/api/forecast/city/130010")
+    .then((response) => response.json())
+    .then((data) => {
         //console.log(data);
 
-        const date = data['forecasts'][0]['date'];
-        const telop = data['forecasts'][0]['telop'];
+        const date = data["forecasts"][0]["date"];
+        const telop = data["forecasts"][0]["telop"];
         console.log(date);
         console.log(telop);
 
-
         yoho = `${date}\n${telop}`;
-
-
     })
-    .catch(error => {
-        console.error('エラー:', error);
+    .catch((error) => {
+        console.error("エラー:", error);
     });
 
 //ーーー天気予報APIーーーー
-
-
 
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
 import {
@@ -36,10 +30,6 @@ import {
 const CHANNEL_SECRET = Deno.env.get("CHANNEL_SECRET")!;
 const client = new messagingApi.MessagingApiClient({
     channelAccessToken: Deno.env.get("CHANNEL_ACCESS_TOKEN")!,
-});
-await client.replyMessage({
-    //replyToken: event.replyToken,
-    messages: [{ type: "text", text: 'hoge' }],
 });
 
 // Honoの初期化
@@ -63,10 +53,30 @@ app.post("/webhook", async (c) => {
         console.log(event.message.text);
 
         // LINE bot SDKを用いて返信する
+        await client.replyMessage({
+            replyToken: event.replyToken,
+            messages: [{ type: "text", text: reply(event.message.text) }],
+        });
     }
 
     return c.json({ status: "success" });
 });
+
+fetch("https://ultimate-sc-line-bot-12.deno.dev/webhook")
+    .then((response) => response.json())
+    .then((data) => {
+        //console.log(data);
+
+        const date = data["forecasts"][0]["date"];
+        const telop = data["forecasts"][0]["telop"];
+        console.log(date);
+        console.log(telop);
+
+        yoho = `${date}\n${telop}`;
+    })
+    .catch((error) => {
+        console.error("エラー:", error);
+    });
 
 /**
  * リクエストを検証してbodyをパースする
