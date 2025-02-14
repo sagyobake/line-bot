@@ -62,11 +62,11 @@ app.post("/webhook", async (c) => {
         // event.message.textの中に受信したメッセージが入っている
         console.log(event.message.text);
         if (event.message.text === answer) {
-            result = `正解！\n${questionGenerator()[0]}`;
+            hoge = questionGenerator();
+            result = `正解！\n${hoge[0]}`;
         } else {
-            result = `不正解！ 正解は ${answer} です。\n${
-                questionGenerator()[0]
-            }`;
+            hoge = questionGenerator();
+            result = `不正解！ 正解は ${answer} です。\n${hoge[0]}`;
         }
 
         // LINE bot SDKを用いて返信する
