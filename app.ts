@@ -17,8 +17,10 @@ function getRandomInt(min, max) {
 const questionGenerator = () => {
     const n = getRandomInt(0, hangul.length);
     const key = Object.keys(hangul[n])[0];
+    const values = Object.values(hangul[n])[0];
+    const obj = { key, values };
 
-    return key;
+    return obj;
 };
 
 //Line Bot--------------------------------
@@ -53,19 +55,19 @@ app.post("/webhook", async (c) => {
             continue;
         }
 
-        let key = questionGenerator();
-
         //ユーザの入力値を取得する
         const input = event.message.text;
         let result = "";
+        let obj = questionGenerator();
+        console.log(obj);
 
-        if (input === hangul[key]) {
+        if (input === Object.values(obj)) {
             result = `○`;
         } else {
             result = `✗`;
         }
 
-        key = questionGenerator();
+        obj = questionGenerator();
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
@@ -73,7 +75,7 @@ app.post("/webhook", async (c) => {
 
             messages: [
                 { type: "text", text: result },
-                { type: "text", text: key },
+                { type: "text", text: Object.keys(obj) },
             ],
         });
     }
