@@ -9,7 +9,6 @@ const hangul = [
 
 let question = ""; //前回出題されたハングル文字を代入する
 let answer = "";
-let result = "";
 
 //乱数ーーーーーーーーーーーーーーーーー
 function getRandomInt(min, max) {
@@ -59,23 +58,18 @@ app.post("/webhook", async (c) => {
     console.log(request);
 
     for (const event of request.events) {
+        let result = "";
         // メッセージイベントのみ処理する
         if (event.type !== "message" || event.message.type !== "text") {
             continue;
         }
 
-        // LINE bot SDKを用いて返信する
-        await client.replyMessage({
-            replyToken: event.replyToken,
-            messages: [{ type: "text", text: question }],
-        });
-
         // event.message.textの中に受信したメッセージが入っている
         console.log(event.message.text);
         if (event.message.text === answer) {
-            result = "○";
+            result = `正解！\n${questionGenerator()}`;
         } else {
-            result = `☓ 正解は ${answer} です。`;
+            result = `不正解！ 正解は ${answer} です。\n${questionGenerator()}`;
         }
 
         // LINE bot SDKを用いて返信する
