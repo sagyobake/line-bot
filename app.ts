@@ -60,7 +60,7 @@ app.post("/webhook", async (c) => {
         let obj = questionGenerator();
         console.log(obj);
         let result = String(Object.keys(obj));
-        let next = String(Object.keys(obj));
+        let next = Object.keys(obj);
 
         if (input === Object.values(obj)) {
             result = `○`;
