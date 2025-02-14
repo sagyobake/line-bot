@@ -75,7 +75,7 @@ app.post("/webhook", async (c) => {
 
             messages: [
                 { type: "text", text: result },
-                { type: "text", text: Object.keys(obj) },
+                { type: "text", text: JSON.stringify(Object.keys(obj)) },
             ],
         });
     }
