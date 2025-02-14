@@ -1,4 +1,4 @@
-//-----------------------------
+//ハングル生成器-----------------------------
 const hangu = [
     { "아": "あ" },
     { "이": "い" },
@@ -7,6 +7,29 @@ const hangu = [
     { "오": "お" },
 ];
 
+let question = ""; //前回出題されたハングル文字を代入する
+let answer = "";
+
+//乱数ーーーーーーーーーーーーーーーーー
+function getRandomIntInclusive(min, max) {
+    const minCeiled = Math.ceil(min);
+    const maxFloored = Math.floor(max);
+    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // 上限を含み、下限も含む
+}
+
+const questionGenerator = () => {
+    const n = getRandomIntInclusive(0, hangu.length);
+    const key = Object.keys(hangu[n]);
+    const value = Object.values(hangu[n]);
+    console.log(key);
+    console.log(value);
+
+    question = JSON.stringify(key);
+    answer = JSON.stringify(value);
+};
+questionGenerator();
+
+//Line Bot--------------------------------
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
 import {
     messagingApi,
@@ -33,6 +56,7 @@ app.post("/webhook", async (c) => {
     console.log(request);
 
     for (const event of request.events) {
+        let result = question;
         // メッセージイベントのみ処理する
         if (event.type !== "message" || event.message.type !== "text") {
             continue;
@@ -40,11 +64,17 @@ app.post("/webhook", async (c) => {
 
         // event.message.textの中に受信したメッセージが入っている
         console.log(event.message.text);
+        if (event.message.text === answer) {
+            result = '正解！';
+        } else {
+            result = `不正解 ${answer}`;
+        }
+        
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
-            messages: [{ type: "text", text: 'gg' }],
+            messages: [{ type: "text", text: result }],
         });
     }
 
@@ -70,6 +100,5 @@ async function validateAndParseRequest(req: HonoRequest) {
     // bodyをパースして返す
     return JSON.parse(body) as WebhookRequestBody;
 }
-
 
 export default app;
