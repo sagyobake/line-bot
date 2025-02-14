@@ -37,6 +37,10 @@ const CHANNEL_SECRET = Deno.env.get("CHANNEL_SECRET")!;
 const client = new messagingApi.MessagingApiClient({
     channelAccessToken: Deno.env.get("CHANNEL_ACCESS_TOKEN")!,
 });
+await client.replyMessage({
+    //replyToken: event.replyToken,
+    messages: [{ type: "text", text: 'hoge' }],
+});
 
 // Honoの初期化
 const app = new Hono();
@@ -59,10 +63,6 @@ app.post("/webhook", async (c) => {
         console.log(event.message.text);
 
         // LINE bot SDKを用いて返信する
-        await client.replyMessage({
-            //replyToken: event.replyToken,
-            messages: [{ type: "text", text: reply(event.message.text) }],
-        });
     }
 
     return c.json({ status: "success" });
