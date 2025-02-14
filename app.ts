@@ -62,10 +62,10 @@ app.post("/webhook", async (c) => {
         // event.message.textの中に受信したメッセージが入っている
         console.log(event.message.text);
         if (event.message.text === answer) {
-            result = `正解！\n${questionGenerator()[1]}`;
+            result = `正解！\n${questionGenerator()[0]}`;
         } else {
             result = `不正解！ 正解は ${answer} です。\n${
-                questionGenerator()[1]
+                questionGenerator()[0]
             }`;
         }
 
