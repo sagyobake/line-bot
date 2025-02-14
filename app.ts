@@ -62,6 +62,12 @@ app.post("/webhook", async (c) => {
             continue;
         }
 
+        // LINE bot SDKを用いて返信する
+        await client.replyMessage({
+            replyToken: event.replyToken,
+            messages: [{ type: "text", text: result }],
+        });
+
         // event.message.textの中に受信したメッセージが入っている
         console.log(event.message.text);
         if (event.message.text === answer) {
@@ -70,12 +76,6 @@ app.post("/webhook", async (c) => {
         } else {
             result = `不正解 ${answer}`;
         }
-
-        // LINE bot SDKを用いて返信する
-        await client.replyMessage({
-            replyToken: event.replyToken,
-            messages: [{ type: "text", text: result }],
-        });
     }
 
     return c.json({ status: "success" });
