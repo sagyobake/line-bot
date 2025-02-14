@@ -9,6 +9,7 @@ const hangul = [
 
 let question = ""; //前回出題されたハングル文字を代入する
 let answer = "";
+let result = "";
 
 //乱数ーーーーーーーーーーーーーーーーー
 function getRandomInt(min, max) {
@@ -58,7 +59,6 @@ app.post("/webhook", async (c) => {
     console.log(request);
 
     for (const event of request.events) {
-        let result = question;
         // メッセージイベントのみ処理する
         if (event.type !== "message" || event.message.type !== "text") {
             continue;
