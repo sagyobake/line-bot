@@ -26,12 +26,12 @@ app.post("/webhook", async (c) => {
     console.log(request);
 
     for (const event of request.events) {
-        const message = event.text.message;
+        const value = event.message.text;
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
-            messages: [{ type: "text", text: message }],
+            messages: [{ type: "text", text: value }],
         });
     }
 
