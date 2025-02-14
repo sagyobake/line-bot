@@ -55,7 +55,7 @@ app.post("/webhook", async (c) => {
         }
 
         let array = questionGenerator();
-        let result = array[0];
+        let result = array[1];
         let next = array[0];
 
         //ユーザの入力値を取得する
