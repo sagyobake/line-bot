@@ -22,7 +22,6 @@ const questionGenerator = () => {
     return [key[0], value[0]];
 };
 
-
 //Line Bot--------------------------------
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
 import {
@@ -63,9 +62,11 @@ app.post("/webhook", async (c) => {
         // event.message.textの中に受信したメッセージが入っている
         console.log(event.message.text);
         if (event.message.text === answer) {
-            result = `正解！\n${question}`;
+            result = `正解！\n${questionGenerator()[1]}`;
         } else {
-            result = `不正解！ 正解は ${answer} です。\n${question}`;
+            result = `不正解！ 正解は ${answer} です。\n${
+                questionGenerator()[1]
+            }`;
         }
 
         // LINE bot SDKを用いて返信する
