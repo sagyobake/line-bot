@@ -8,7 +8,7 @@ const hangul = [
 ];
 
 let question = ""; //前回出題されたハングル文字を代入する
-let answer = "";
+let answer = '';
 
 //乱数ーーーーーーーーーーーーーーーーー
 function getRandomInt(min, max) {
@@ -19,15 +19,16 @@ function getRandomInt(min, max) {
 
 const questionGenerator = () => {
     const n = getRandomInt(0, hangul.length);
-    const key = Object.keys(hangul[n]);
+    const key = Object.keys(hangul[n])
     const value = Object.values(hangul[n]);
 
-    question = JSON.stringify(key[0]);
-    answer = JSON.stringify(value[0]);
+    question = key[0]; //ダブルクオーテーションを除去することに成功！
+    answer = value[0];
 
     console.log(question);
     console.log(answer);
-    console.log("a");
+    console.log('a');
+
 };
 questionGenerator();
 
