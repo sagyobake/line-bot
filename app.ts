@@ -20,6 +20,8 @@ fetch('https://weather.tsukumijima.net/api/forecast/city/130010')
         console.error('エラー:', error);
     });
 
+//ーーー天気予報APIーーーー
+
 
 
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
@@ -58,7 +60,7 @@ app.post("/webhook", async (c) => {
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
-            replyToken: event.replyToken,
+            //replyToken: event.replyToken,
             messages: [{ type: "text", text: reply(event.message.text) }],
         });
     }
@@ -89,7 +91,7 @@ async function validateAndParseRequest(req: HonoRequest) {
 /**
  * 受信したメッセージに対する返信を作成する
  * @param message 受信したメッセージ
- * @returns 返信する文字列
+ * @returns tr
  */
 function reply(message: string) {
     // 現在はオウム返し（受信した内容をそのまま返信）
