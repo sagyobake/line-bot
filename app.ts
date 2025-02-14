@@ -17,16 +17,11 @@ function getRandomInt(min, max) {
 const questionGenerator = () => {
     const n = getRandomInt(0, hangul.length);
     const key = Object.keys(hangul[n]);
-
-    return key[0];
-};
-
-const answerGenerator = () => {
-    const n = getRandomInt(0, hangul.length);
     const value = Object.values(hangul[n]);
 
-    return value[0];
+    return [key[0], value[0]];
 };
+
 
 //Line Bot--------------------------------
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
@@ -55,8 +50,8 @@ app.post("/webhook", async (c) => {
     console.log(request);
 
     for (const event of request.events) {
-        let question = questionGenerator();
-        let answer = answerGenerator();
+        let question = questionGenerator()[0];
+        let answer = questionGenerator()[1];
         let result = question;
 
         // メッセージイベントのみ処理する
