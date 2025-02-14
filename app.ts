@@ -68,7 +68,6 @@ app.post("/webhook", async (c) => {
             result = `✗`;
         }
 
-        obj = questionGenerator();
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
@@ -78,6 +77,8 @@ app.post("/webhook", async (c) => {
                 { type: "text", text: next },
             ],
         });
+
+        obj = questionGenerator();
     }
 
     return c.json({ status: "success" });
