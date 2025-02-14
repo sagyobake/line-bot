@@ -66,6 +66,11 @@ app.post("/webhook", async (c) => {
     return c.json({ status: "success" });
 });
 
+// LINE bot SDKを用いて返信する
+await client.replyMessage({
+    messages: [{ type: "text", text: 'hoge' }],
+});
+
 /**
  * リクエストを検証してbodyをパースする
  * Note:リクエストがLINEプラットフォームから送られたことを確認するために、ボットサーバーでリクエストヘッダーのx-line-signatureに含まれる署名を検証します。
