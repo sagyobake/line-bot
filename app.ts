@@ -67,7 +67,7 @@ app.post("/webhook", async (c) => {
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
-            messages: [{ type: "text", text: result }],
+            messages: [{ type: "text", text: question }],
         });
 
         // event.message.textの中に受信したメッセージが入っている
