@@ -8,7 +8,7 @@ const hangul = [
 ];
 
 let question = ""; //前回出題されたハングル文字を代入する
-let answer = '';
+let answer = "";
 
 //乱数ーーーーーーーーーーーーーーーーー
 function getRandomInt(min, max) {
@@ -19,7 +19,7 @@ function getRandomInt(min, max) {
 
 const questionGenerator = () => {
     const n = getRandomInt(0, hangul.length);
-    const key = Object.keys(hangul[n])
+    const key = Object.keys(hangul[n]);
     const value = Object.values(hangul[n]);
 
     question = key[0]; //ダブルクオーテーションを除去することに成功！
@@ -27,8 +27,7 @@ const questionGenerator = () => {
 
     console.log(question);
     console.log(answer);
-    console.log('a');
-
+    console.log("a");
 };
 questionGenerator();
 
@@ -65,12 +64,6 @@ app.post("/webhook", async (c) => {
             continue;
         }
 
-        // LINE bot SDKを用いて返信する
-        await client.replyMessage({
-            replyToken: event.replyToken,
-            messages: [{ type: "text", text: result }],
-        });
-
         // event.message.textの中に受信したメッセージが入っている
         console.log(event.message.text);
         if (event.message.text === answer) {
@@ -79,6 +72,12 @@ app.post("/webhook", async (c) => {
         } else {
             result = `不正解 ${answer}`;
         }
+
+        // LINE bot SDKを用いて返信する
+        await client.replyMessage({
+            replyToken: event.replyToken,
+            messages: [{ type: "text", text: result }],
+        });
     }
 
     return c.json({ status: "success" });
