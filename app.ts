@@ -54,25 +54,29 @@ app.post("/webhook", async (c) => {
             continue;
         }
 
-        let array = "";
-        let result = "";
+        let array = questionGenerator();
+        let result = array[0];
+        let next = array[0];
 
         //ユーザの入力値を取得する
         const input = event.message.text;
 
         if (input === array[1]) {
-            let array = questionGenerator();
-            result = `○ 次の問題 ${array[0]}`;
+            result = `○`;
         } else {
-            let array = questionGenerator();
-            result = `✗ 正解は ${array[1]} です。\n次の問題 ${array[0]}`;
+            result = `✗`;
         }
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
-            messages: [{ type: "text", text: result }],
+            messages: [
+                { type: "text", text: result },
+                { type: "text", text: next },
+            ],
         });
+
+
     }
 
     return c.json({ status: "success" });
