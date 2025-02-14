@@ -61,7 +61,6 @@ app.post("/webhook", async (c) => {
         const input = event.message.text;
 
         if (input === array[1]) {
-            array = questionGenerator();
             result = `○ 次の問題 ${array[0]}`;
         } else {
             result = `✗ 正解は ${array[1]} です。\n次の問題 ${array[0]}`;
