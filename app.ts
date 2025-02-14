@@ -7,9 +7,6 @@ const hangul = [
     { "오": "お" },
 ];
 
-let question = ""; //前回出題されたハングル文字を代入する
-let answer = "";
-
 //乱数ーーーーーーーーーーーーーーーーー
 function getRandomInt(min, max) {
     const minCeiled = Math.ceil(min);
@@ -20,16 +17,16 @@ function getRandomInt(min, max) {
 const questionGenerator = () => {
     const n = getRandomInt(0, hangul.length);
     const key = Object.keys(hangul[n]);
+
+    return key[0];
+};
+
+const answerGenerator = () => {
+    const n = getRandomInt(0, hangul.length);
     const value = Object.values(hangul[n]);
 
-    question = key[0]; //ダブルクオーテーションを除去することに成功！
-    answer = value[0];
-
-    console.log(question);
-    console.log(answer);
-    console.log("a");
+    return value[0];
 };
-questionGenerator();
 
 //Line Bot--------------------------------
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
@@ -58,7 +55,10 @@ app.post("/webhook", async (c) => {
     console.log(request);
 
     for (const event of request.events) {
-        let result = "";
+        let question = questionGenerator();
+        let answer = answerGenerator();
+        let result = question;
+
         // メッセージイベントのみ処理する
         if (event.type !== "message" || event.message.type !== "text") {
             continue;
@@ -67,9 +67,9 @@ app.post("/webhook", async (c) => {
         // event.message.textの中に受信したメッセージが入っている
         console.log(event.message.text);
         if (event.message.text === answer) {
-            result = `正解！\n${questionGenerator()}`;
+            result = `正解！\n${question}`;
         } else {
-            result = `不正解！ 正解は ${answer} です。\n${questionGenerator()}`;
+            result = `不正解！ 正解は ${answer} です。\n${question}`;
         }
 
         // LINE bot SDKを用いて返信する
