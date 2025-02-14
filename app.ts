@@ -1,24 +1,3 @@
-let yoho = "hogehoge";
-
-await fetch("https://weather.tsukumijima.net/api/forecast/city/130010")
-    .then((response) => response.json())
-    .then((data) => {
-        //console.log(data);
-
-        const date = data["forecasts"][0]["date"];
-        const telop = data["forecasts"][0]["telop"];
-        console.log(date);
-        console.log(telop);
-
-        yoho = `${date}\n${telop}`;
-    })
-    .catch((error) => {
-        console.error("エラー:", error);
-    });
-
-//ーーー天気予報APIーーーー
-
-
 //-----------------------------
 
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
@@ -58,32 +37,12 @@ app.post("/webhook", async (c) => {
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
-            messages: [{ type: "text", text: yoho }],
+            messages: [{ type: "text", text: reply(event.message.text) }],
         });
-
-        
     }
 
     return c.json({ status: "success" });
 });
-
-/*
-fetch("https://ultimate-sc-line-bot-12.deno.dev/webhook")
-    .then((response) => response.json())
-    .then((data) => {
-        //console.log(data);
-
-        const date = data["forecasts"][0]["date"];
-        const telop = data["forecasts"][0]["telop"];
-        console.log(date);
-        console.log(telop);
-
-        yoho = `${date}\n${telop}`;
-    })
-    .catch((error) => {
-        console.error("エラー:", error);
-    });
-*/
 
 /**
  * リクエストを検証してbodyをパースする
