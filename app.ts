@@ -57,9 +57,9 @@ app.post("/webhook", async (c) => {
 
         //ユーザの入力値を取得する
         const input = event.message.text;
-        let result = "";
         let obj = questionGenerator();
         console.log(obj);
+        let result = JSON.stringify(Object.keys(obj));
 
         if (input === Object.values(obj)) {
             result = `○`;
