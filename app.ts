@@ -62,6 +62,7 @@ app.post("/webhook", async (c) => {
     return c.json({ status: "success" });
 });
 
+/*
 fetch("https://ultimate-sc-line-bot-12.deno.dev/webhook")
     .then((response) => response.json())
     .then((data) => {
@@ -77,6 +78,7 @@ fetch("https://ultimate-sc-line-bot-12.deno.dev/webhook")
     .catch((error) => {
         console.error("エラー:", error);
     });
+*/
 
 /**
  * リクエストを検証してbodyをパースする
