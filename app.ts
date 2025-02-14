@@ -1,5 +1,5 @@
 //ハングル生成器-----------------------------
-const hangu = [
+const hangul = [
     { "아": "あ" },
     { "이": "い" },
     { "우": "う" },
@@ -11,21 +11,23 @@ let question = ""; //前回出題されたハングル文字を代入する
 let answer = "";
 
 //乱数ーーーーーーーーーーーーーーーーー
-function getRandomIntInclusive(min, max) {
+function getRandomInt(min, max) {
     const minCeiled = Math.ceil(min);
     const maxFloored = Math.floor(max);
-    return Math.floor(Math.random() * (maxFloored - minCeiled + 1) + minCeiled); // 上限を含み、下限も含む
+    return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // 上限は除き、下限は含む
 }
 
 const questionGenerator = () => {
-    const n = getRandomIntInclusive(0, hangu.length);
-    const key = Object.keys(hangu[n]);
-    const value = Object.values(hangu[n]);
-    console.log(key);
-    console.log(value);
+    const n = getRandomInt(0, hangul.length);
+    const key = Object.keys(hangul[n]);
+    const value = Object.values(hangul[n]);
 
-    question = JSON.stringify(key);
-    answer = JSON.stringify(value);
+    question = JSON.stringify(key[0]);
+    answer = JSON.stringify(value[0]);
+
+    console.log(question);
+    console.log(answer);
+    console.log("a");
 };
 questionGenerator();
 
