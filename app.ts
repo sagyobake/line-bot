@@ -56,7 +56,6 @@ app.post("/webhook", async (c) => {
 
         let array = questionGenerator();
         let result = array[1];
-        let next = array[0];
 
         //ユーザの入力値を取得する
         const input = event.message.text;
@@ -67,16 +66,16 @@ app.post("/webhook", async (c) => {
             result = `✗`;
         }
 
+        array = questionGenerator();
+
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
             messages: [
                 { type: "text", text: result },
-                { type: "text", text: next },
+                { type: "text", text: array[0] },
             ],
         });
-
-
     }
 
     return c.json({ status: "success" });
