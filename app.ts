@@ -78,13 +78,13 @@ app.post("/webhook", async (c) => {
             result = `☓ 正解は ${answer} です。`;
         }
 
-        questionGenerator();
-
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
             messages: [{ type: "text", text: result }],
         });
+
+        questionGenerator();
     }
 
     return c.json({ status: "success" });
