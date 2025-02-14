@@ -58,7 +58,7 @@ app.post("/webhook", async (c) => {
             // LINE bot SDKを用いて返信する
             client.replyMessage({
                 replyToken: event.replyToken,
-                messages: [{ type: "text", text: reply(event.message.text) }],
+                messages: [{ type: "text", text: yoho }],
             });
         });
         //-----------------------------
