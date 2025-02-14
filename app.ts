@@ -1,4 +1,11 @@
 //-----------------------------
+const hangu = [
+    { "아": "あ" },
+    { "이": "い" },
+    { "우": "う" },
+    { "에": "え" },
+    { "오": "お" },
+];
 
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
 import {
@@ -37,7 +44,7 @@ app.post("/webhook", async (c) => {
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
-            messages: [{ type: "text", text: reply(event.message.text) }],
+            messages: [{ type: "text", text: 'gg' }],
         });
     }
 
@@ -64,14 +71,5 @@ async function validateAndParseRequest(req: HonoRequest) {
     return JSON.parse(body) as WebhookRequestBody;
 }
 
-/**
- * 受信したメッセージに対する返信を作成する
- * @param message 受信したメッセージ
- * @returns tr
- */
-function reply(message: string) {
-    // 現在はオウム返し（受信した内容をそのまま返信）
-    return message;
-}
 
 export default app;
