@@ -61,7 +61,7 @@ app.post("/webhook", async (c) => {
         //ユーザの入力値を取得する
         const input = event.message.text;
 
-        if (input === array[1]) {
+        if (input === request) {
             result = `○`;
         } else {
             result = `✗`;
