@@ -1,26 +1,3 @@
-//ハングル生成器-----------------------------
-const hangul = [
-    { "아A": "あ" },
-    { "이I": "い" },
-    { "우U": "う" },
-    { "에E": "え" },
-    { "오O": "お" },
-];
-
-//乱数ーーーーーーーーーーーーーーーーー
-function getRandomInt(min, max) {
-    const minCeiled = Math.ceil(min);
-    const maxFloored = Math.floor(max);
-    return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // 上限は除き、下限は含む
-}
-
-const questionGenerator = () => {
-    const n = getRandomInt(0, hangul.length);
-    const key = Object.keys(hangul[n]);
-    const value = Object.values(hangul[n]);
-
-    return [key[0], value[0]];
-};
 
 //Line Bot--------------------------------
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
@@ -49,34 +26,12 @@ app.post("/webhook", async (c) => {
     console.log(request);
 
     for (const event of request.events) {
-        let hoge = questionGenerator();
-        let question = hoge[0];
-        let answer = hoge[1];
-        let result = question;
-
-        // メッセージイベントのみ処理する
-        if (event.type !== "message" || event.message.type !== "text") {
-            continue;
-        }
-
-        // event.message.textの中に受信したメッセージが入っている
-        console.log(event.message.text);
-        if (event.message.text === answer) {
-            hoge = questionGenerator();
-            question = hoge[0];
-            answer = hoge[1];
-            result = `正解！\n${question}`;
-        } else {
-            hoge = questionGenerator();
-            question = hoge[0];
-            answer = hoge[1];
-            result = `不正解！ 正解は ${answer} です。\n${question}`;
-        }
+        const message = event.text.message;
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
-            messages: [{ type: "text", text: result }],
+            messages: [{ type: "text", text: message }],
         });
     }
 
