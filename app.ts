@@ -18,6 +18,20 @@ fetch("https://weather.tsukumijima.net/api/forecast/city/130010")
 
 //ーーー天気予報APIーーーー
 
+const sendMessage = async (event) => {
+    // LINE bot SDKを用いて返信する
+    await client.replyMessage({
+        replyToken: event.replyToken,
+        messages: [{ type: "text", text: yoho }],
+    });
+};
+
+//Deno.cron------------------------------
+await Deno.cron("Run once a minute", "* * * * *", () => {
+    console.log("Hello, cron!");
+});
+//-----------------------------
+
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
 import {
     messagingApi,
@@ -52,16 +66,13 @@ app.post("/webhook", async (c) => {
         // event.message.textの中に受信したメッセージが入っている
         console.log(event.message.text);
 
-        //Deno.cron------------------------------
-        await Deno.cron("Run once a minute", "* * * * *", () => {
-            console.log("Hello, cron!");
-            // LINE bot SDKを用いて返信する
-            client.replyMessage({
-                replyToken: event.replyToken,
-                messages: [{ type: "text", text: yoho }],
-            });
+        // LINE bot SDKを用いて返信する
+        await client.replyMessage({
+            replyToken: event.replyToken,
+            messages: [{ type: "text", text: yoho }],
         });
-        //-----------------------------
+
+        sendMessage(event);
     }
 
     return c.json({ status: "success" });
