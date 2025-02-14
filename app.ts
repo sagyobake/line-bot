@@ -60,6 +60,7 @@ app.post("/webhook", async (c) => {
         let obj = questionGenerator();
         console.log(obj);
         let result = JSON.stringify(Object.keys(obj));
+        let next = JSON.stringify(Object.keys(obj));
 
         if (input === Object.values(obj)) {
             result = `○`;
@@ -68,14 +69,13 @@ app.post("/webhook", async (c) => {
         }
 
         obj = questionGenerator();
-
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
 
             messages: [
                 { type: "text", text: result },
-                { type: "text", text: JSON.stringify(Object.keys(obj)) },
+                { type: "text", text: next },
             ],
         });
     }
