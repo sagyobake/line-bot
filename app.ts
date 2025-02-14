@@ -62,9 +62,9 @@ app.post("/webhook", async (c) => {
 
         if (input === array[1]) {
             array = questionGenerator();
-            result = `正解！\n次の問題はこちら ${array}`;
+            result = `☓\n次の問題 ${array[0]}`;
         } else {
-            result = `不正解！\n正解は ${array[1]} です。\n次の問題はこちら ${array}`;
+            result = `○\n正解は ${array[1]} です。\n次の問題 ${array[0]}`;
         }
 
         // LINE bot SDKを用いて返信する
@@ -72,7 +72,6 @@ app.post("/webhook", async (c) => {
             replyToken: event.replyToken,
             messages: [{ type: "text", text: result }],
         });
-
     }
 
     return c.json({ status: "success" });
