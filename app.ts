@@ -59,8 +59,8 @@ app.post("/webhook", async (c) => {
         const input = event.message.text;
         let obj = questionGenerator();
         console.log(obj);
-        let result = JSON.stringify(Object.keys(obj));
-        let next = JSON.stringify(Object.keys(obj));
+        let result = String(Object.keys(obj));
+        let next = String(Object.keys(obj));
 
         if (input === Object.values(obj)) {
             result = `○`;
