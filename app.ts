@@ -54,15 +54,17 @@ app.post("/webhook", async (c) => {
             continue;
         }
 
-        let array = questionGenerator();
-        let result = array[0];
+        let array = "";
+        let result = "";
 
         //ユーザの入力値を取得する
         const input = event.message.text;
 
         if (input === array[1]) {
+            let array = questionGenerator();
             result = `○ 次の問題 ${array[0]}`;
         } else {
+            let array = questionGenerator();
             result = `✗ 正解は ${array[1]} です。\n次の問題 ${array[0]}`;
         }
 
