@@ -61,8 +61,8 @@ app.post("/webhook", async (c) => {
 
         //ユーザの入力値を取得する
         const input = event.message.text;
-        let result = questionGenerator();
-        let question = questionGenerator();
+        let result, question = questionGenerator();
+
 
         if (hangul_obj[input] === result) {
             result = 'ok';
