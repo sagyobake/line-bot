@@ -51,12 +51,6 @@ class Question {
 
 const question = new Question();
 
-let result = question.Result();
-let p = result["p"];
-let q = result["q"];
-let pq = p * q;
-let value = "これは例題です、適当な値を入力してゲームを開始してください。";
-
 //-----------------------------------------------
 
 //Line Bot--------------------------------
@@ -91,6 +85,12 @@ app.post("/webhook", async (c) => {
             continue;
         }
 
+        let result = question.Result();
+        let p = result["p"];
+        let q = result["q"];
+        let pq = p * q;
+        let value = "Server Start";
+
         //ユーザーの入力値が　event.message.text　である。
         const input = Number(event.message.text);
         console.log(input);
@@ -105,6 +105,7 @@ app.post("/webhook", async (c) => {
         p = result["p"];
         q = result["q"];
         pq = p * q;
+
         const next_question =
             `AまたはBに当てはまる値を半角英数字で1つ入力してください。\n
         A × B = ${pq}
