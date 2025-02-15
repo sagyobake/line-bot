@@ -25,7 +25,7 @@ class Question {
     }
 
     Duplication() {
-        const prime = this.primeNumber(11);
+        const prime = this.primeNumber(17);
         const p = prime[this.getRandomInt(1, prime.length - 1)];
         const q = prime[this.getRandomInt(1, prime.length - 1)];
 
