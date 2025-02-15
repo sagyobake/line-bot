@@ -1,13 +1,13 @@
 //ハングル生成器-----------------------------
 const hangul_obj = {
-    "a": "あ",
-    "i": "い",
-    "u": "う",
-    "e": "え",
-    "o": "お",
+    "あ": "a",
+    "い": "i",
+    "う": "u",
+    "え": "e",
+    "お": "o",
 };
 
-const hangul_array = ["a", "i", "u", "e", "o"];
+const ja_array = ["あ", "い", "う", "え", "お"];
 
 //乱数ーーーーーーーーーーーーーーーーー
 function getRandomInt(min, max) {
@@ -17,10 +17,11 @@ function getRandomInt(min, max) {
 }
 
 const questionGenerator = () => {
-    const n = getRandomInt(0, hangul_array.length);
-    const quesiton = hangul_array[n];
+    const n = getRandomInt(0, ja_array.length);
+    const ja = ja_array[n];
+    const question = hangul_obj[ja];
 
-    return quesiton;
+    return question;
 };
 
 const hoge = questionGenerator();
@@ -60,14 +61,13 @@ app.post("/webhook", async (c) => {
 
         //ユーザの入力値を取得する
         const input = event.message.text;
-        const quesiton = questionGenerator();
-        let result = "";
-        let next_question = questionGenerator();
+        let result = questionGenerator();
+        let question = questionGenerator();
 
-        if (input === hangul_obj[input]) {
-            result = "正解！";
+        if (hangul_obj[input] === result) {
+            result = 'ok';
         } else {
-            result = "不正解！";
+            result = 'no';
         }
 
         // LINE bot SDKを用いて返信する
@@ -76,7 +76,7 @@ app.post("/webhook", async (c) => {
 
             messages: [
                 { type: "text", text: result },
-                { type: "text", text: next_question },
+                { type: "text", text: question },
             ],
         });
     }
