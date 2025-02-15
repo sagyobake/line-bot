@@ -55,7 +55,7 @@ let result = question.Result();
 let p = result["p"];
 let q = result["q"];
 let pq = p * q;
-let value = "AまたはBに当てはまる数を1つ入力してください。";
+let value = "これは例題です、適当な値を入力してゲームを開始してください。";
 
 //-----------------------------------------------
 
@@ -96,17 +96,16 @@ app.post("/webhook", async (c) => {
         console.log(input);
         console.log(p, q);
         if (input === p || input === q) {
-            value = "ok";
+            value = "正解 (^o^)";
         } else {
-            value = "no";
+            value = `不正解 (ﾟ∀ﾟ)　正解は${p}または${q}です。`;
         }
 
         result = question.Result();
         p = result["p"];
         q = result["q"];
         pq = p * q;
-        const next_question = 
-        `AまたはBに当てはまる値を1つ入力してください。\n
+        const next_question = `AまたはBに当てはまる値を1つ入力してください。\n
         A × B = ${pq}
         `;
 
