@@ -65,13 +65,18 @@ app.post("/webhook", async (c) => {
 
             if (hangul_obj[input] === question) {
                 result = "正解！";
-                question = questionGenerator();
             } else {
-                result = "不正解！";
+                const correct = Object.keys(hangul_obj).find((key) =>
+                    hangul_obj[key] === question
+                );
+                console.log(correct);
+
+                result = `不正解！　正解は${correct}です。`;
             }
         };
 
         checkingAnswer();
+        question = questionGenerator();
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
