@@ -54,8 +54,8 @@ const question = new Question();
 let result = question.Result();
 let p = result["p"];
 let q = result["q"];
-let pq = String(p * q);
-let value = "これは例題です、AまたはBに当てはまる数を一つ入力してください。";
+let pq = p * q;
+let value = "AまたはBに当てはまる数を1つ入力してください。";
 
 //-----------------------------------------------
 
@@ -104,7 +104,8 @@ app.post("/webhook", async (c) => {
         result = question.Result();
         p = result["p"];
         q = result["q"];
-        pq = `A × B = ${pq}`;
+        pq = p * q;
+        const next_question = `A × B = ${pq}`;
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
@@ -112,7 +113,7 @@ app.post("/webhook", async (c) => {
 
             messages: [
                 { type: "text", text: value },
-                { type: "text", text: pq },
+                { type: "text", text: next_question },
             ],
         });
     }
