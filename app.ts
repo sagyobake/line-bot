@@ -55,7 +55,7 @@ let result = question.Result();
 let p = result["p"];
 let q = result["q"];
 let pq = p * q;
-let value = "";
+let value = "これは例題です、適当な値を入力してゲームを開始してください。";
 
 //-----------------------------------------------
 
@@ -91,14 +91,6 @@ app.post("/webhook", async (c) => {
             continue;
         }
 
-        //ユーザーの入力値が　event.message.text　である。
-        const input = event.message.text;
-        if (input === p || input === q) {
-            value = "ok";
-        } else {
-            value = "no";
-        }
-
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
@@ -108,6 +100,14 @@ app.post("/webhook", async (c) => {
                 { type: "text", text: pq },
             ],
         });
+
+        //ユーザーの入力値が　event.message.text　である。
+        const input = event.message.text;
+        if (input === p || input === q) {
+            value = "ok";
+        } else {
+            value = "no";
+        }
 
         result = question.Result();
         p = result["p"];
