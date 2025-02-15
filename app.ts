@@ -24,8 +24,8 @@ const questionGenerator = () => {
     return question;
 };
 
-let question = "hoge";
-let result = "hoge";
+let question = questionGenerator();
+let result = "これは例題です。\n適当な値を入力して次の問題へ進んでください。";
 
 //Line Bot--------------------------------
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
@@ -64,10 +64,10 @@ app.post("/webhook", async (c) => {
             const input = event.message.text;
 
             if (hangul_obj[input] === question) {
-                result = '正解！';
+                result = "正解！";
                 question = questionGenerator();
             } else {
-                result = '不正解！';
+                result = "不正解！";
             }
         };
 
