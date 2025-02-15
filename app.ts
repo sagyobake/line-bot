@@ -64,7 +64,7 @@ app.post("/webhook", async (c) => {
         let result = "";
         let next_question = questionGenerator();
 
-        if (input === hangul_array[input]) {
+        if (input === hangul_obj[input]) {
             result = "正解！";
         } else {
             result = "不正解！";
