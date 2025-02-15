@@ -61,7 +61,7 @@ app.post("/webhook", async (c) => {
 
         //ユーザの入力値を取得する
         const input = event.message.text;
-        let question = questionGenerator();
+        let question = "";
         let result = "";
 
         if (hangul_obj[input] === question) {
@@ -69,6 +69,8 @@ app.post("/webhook", async (c) => {
         } else {
             result = `不正解　入力値:${hangul_obj[input]} ${question}`;
         }
+
+        question = questionGenerator();
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
