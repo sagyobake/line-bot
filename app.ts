@@ -2,7 +2,7 @@
 class Question {
     primeNumber(n) {
         let prime = [2];
-        for (let i = 2; i < n; i++) {
+        for (let i = 2; i <= n; i++) {
             let check = true;
             if (i % 2 !== 0) {
                 for (let j = 2; j < (i / 2); j++) {
@@ -25,7 +25,7 @@ class Question {
     }
 
     Duplication() {
-        const prime = this.primeNumber(20);
+        const prime = this.primeNumber(13);
         const p = prime[this.getRandomInt(1, prime.length - 1)];
         const q = prime[this.getRandomInt(1, prime.length - 1)];
 
