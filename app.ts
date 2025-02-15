@@ -99,11 +99,6 @@ app.post("/webhook", async (c) => {
             value = "no";
         }
 
-        result = question.Result();
-        p = result["p"];
-        q = result["q"];
-        pq = p * q;
-
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
@@ -113,6 +108,11 @@ app.post("/webhook", async (c) => {
                 { type: "text", text: pq },
             ],
         });
+
+        result = question.Result();
+        p = result["p"];
+        q = result["q"];
+        pq = p * q;
     }
 
     return c.json({ status: "success" });
