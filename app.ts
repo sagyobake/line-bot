@@ -36,17 +36,19 @@ class Question {
             return this.Duplication();
         }
     }
+
+    Result() {
+        const index = this.Duplication();
+
+        console.log(index);
+
+        const p = index["p"];
+        const q = index["q"];
+        const pq = p * q;
+
+        return { pq, p, q };
+    }
 }
-
-const question = new Question();
-const index = question.Duplication();
-
-const p = index["p"];
-const q = index["q"];
-const pq = p * q;
-
-console.log(p, q);
-console.log(pq);
 
 //-----------------------------------------------
 
@@ -82,15 +84,20 @@ app.post("/webhook", async (c) => {
             continue;
         }
 
+        //ユーザーの入力値が　event.message.text　である。
         const input: number = event.message.text;
-        const result = input ** 2;
+        const question = new Question();
+        const result = question.Result();
+        const p = request["p"];
+        const q = result["q"];
+        const pq = p * q;
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
 
             messages: [
-                { type: "text", text: result },
+                { type: "text", text: pq },
             ],
         });
     }
