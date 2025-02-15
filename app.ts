@@ -78,7 +78,6 @@ app.post("/webhook", async (c) => {
             ],
         });
 
-        question = questionGenerator();
     }
 
     return c.json({ status: "success" });
