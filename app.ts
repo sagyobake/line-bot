@@ -61,13 +61,13 @@ app.post("/webhook", async (c) => {
 
         //ユーザの入力値を取得する
         const input = event.message.text;
-        let question = "";
+        let question = questionGenerator();
         let result = "";
 
         if (hangul_obj[input] === question) {
-            result = `正解　入力値:${hangul_obj[input]} ${question}`;
+            result = `正解　入力値:${hangul_obj[input]}　${question}`;
         } else {
-            result = `不正解　入力値:${hangul_obj[input]} ${question}`;
+            result = `不正解　入力値:${hangul_obj[input]}　${question}`;
         }
 
         question = questionGenerator();
