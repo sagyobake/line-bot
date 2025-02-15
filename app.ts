@@ -101,11 +101,6 @@ app.post("/webhook", async (c) => {
             value = `不正解 (ﾟ∀ﾟ)　正解は${p}または${q}です。`;
         }
 
-        result = question.Result();
-        p = result["p"];
-        q = result["q"];
-        pq = p * q;
-
         const next_question =
             `AまたはBに当てはまる値を半角英数字で1つ入力してください。\n
         A × B = ${pq}
@@ -120,6 +115,11 @@ app.post("/webhook", async (c) => {
                 { type: "text", text: next_question },
             ],
         });
+
+        result = question.Result();
+        p = result["p"];
+        q = result["q"];
+        pq = p * q;
     }
 
     return c.json({ status: "success" });
