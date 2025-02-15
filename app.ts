@@ -76,7 +76,7 @@ app.post("/webhook", async (c) => {
 
             messages: [
                 { type: "text", text: result },
-                { type: "text", text: next },
+                { type: "text", text: next_question },
             ],
         });
     }
