@@ -1,5 +1,4 @@
 //素因数分解の問題を生成するClass
-
 class Question {
     primeNumber(n) {
         let prime = [2];
@@ -97,7 +96,7 @@ app.post("/webhook", async (c) => {
             replyToken: event.replyToken,
 
             messages: [
-                { type: "text", text: pq },
+                { type: "text", text: 'hoge' },
             ],
         });
     }
