@@ -92,7 +92,7 @@ app.post("/webhook", async (c) => {
         }
 
         //ユーザーの入力値が　event.message.text　である。
-        const input: number = event.message.text;
+        const input = event.message.text;
         if (input === p || input === q) {
             value = "ok";
         } else {
