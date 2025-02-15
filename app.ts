@@ -1,31 +1,54 @@
-//ハングル生成器-----------------------------
-const hangul_obj = {
-    "あ": "a",
-    "い": "i",
-    "う": "u",
-    "え": "e",
-    "お": "o",
-};
+//素因数分解の問題を生成するClass
 
-const ja_array = ["あ", "い", "う", "え", "お"];
+class Question {
+    primeNumber(n) {
+        let prime = [2];
+        for (let i = 2; i < n; i++) {
+            let check = true;
+            if (i % 2 !== 0) {
+                for (let j = 2; j < (i / 2); j++) {
+                    if (i % j === 0) {
+                        check = false;
+                    }
+                }
+                if (check === true) {
+                    prime.push(i);
+                }
+            }
+        }
+        return prime;
+    }
 
-//乱数ーーーーーーーーーーーーーーーーー
-function getRandomInt(min, max) {
-    const minCeiled = Math.ceil(min);
-    const maxFloored = Math.floor(max);
-    return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // 上限は除き、下限は含む
+    getRandomInt(min, max) {
+        const minCeiled = Math.ceil(min);
+        const maxFloored = Math.floor(max);
+        return Math.floor(Math.random() * (maxFloored - minCeiled) + minCeiled); // 上限は除き、下限は含む
+    }
+
+    Duplication() {
+        const prime = this.primeNumber(20);
+        const p = this.getRandomInt(1, prime.length - 1);
+        const q = this.getRandomInt(1, prime.length - 1);
+
+        if (p !== q) {
+            return { p, q };
+        } else {
+            return this.Duplication();
+        }
+    }
 }
 
-const questionGenerator = () => {
-    const n = getRandomInt(0, ja_array.length);
-    const ja = ja_array[n];
-    const question = hangul_obj[ja];
+const question = new Question();
+const index = question.Duplication();
 
-    return question;
-};
+const p = index["p"];
+const q = index["q"];
+const pq = p * q;
 
-let question = questionGenerator();
-let result = "これは例題です。\n適当な値を入力して次の問題へ進んでください。";
+console.log(p, q);
+console.log(pq);
+
+//-----------------------------------------------
 
 //Line Bot--------------------------------
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
@@ -59,19 +82,8 @@ app.post("/webhook", async (c) => {
             continue;
         }
 
-        const checkingAnswer = () => {
-            //ユーザの入力値を取得する
-            const input = event.message.text;
-
-            if (hangul_obj[input] === question) {
-                result = "正解(^o^)";
-            } else {
-                result = "不正解(ﾟ∀ﾟ)";
-            }
-        };
-
-        checkingAnswer();
-        question = questionGenerator();
+        const input: number = event.message.text;
+        const result = input ** 2;
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
@@ -79,7 +91,6 @@ app.post("/webhook", async (c) => {
 
             messages: [
                 { type: "text", text: result },
-                { type: "text", text: question },
             ],
         });
     }
