@@ -105,7 +105,10 @@ app.post("/webhook", async (c) => {
         p = result["p"];
         q = result["q"];
         pq = p * q;
-        const next_question = `A × B = ${pq}`;
+        const next_question = 
+        `AまたはBに当てはまる値を1つ入力してください。\n
+        A × B = ${pq}
+        `;
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
