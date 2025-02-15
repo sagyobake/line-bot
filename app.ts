@@ -64,9 +64,9 @@ app.post("/webhook", async (c) => {
             const input = event.message.text;
 
             if (hangul_obj[input] === question) {
-                result = "ok";
+                result = `正解！`;
             } else {
-                result = "no";
+                result = `不正解！ 正解は ${question} です。`;
             }
         };
 
