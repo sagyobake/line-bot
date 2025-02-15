@@ -64,14 +64,14 @@ app.post("/webhook", async (c) => {
             const input = event.message.text;
 
             if (hangul_obj[input] === question) {
-                result = `正解！`;
+                result = '正解！';
+                question = questionGenerator();
             } else {
-                result = `不正解！ 正解は ${question} です。`;
+                result = '不正解！';
             }
         };
 
         checkingAnswer();
-        question = questionGenerator();
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
