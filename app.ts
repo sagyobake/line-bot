@@ -71,7 +71,7 @@ app.post("/webhook", async (c) => {
                 );
                 console.log(correct);
 
-                result = `不正解！　正解は${correct}です。`;
+                result = `不正解！　正解は ${correct} です。`;
             }
         };
 
