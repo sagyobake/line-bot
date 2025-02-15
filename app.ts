@@ -49,6 +49,14 @@ class Question {
     }
 }
 
+const question = new Question();
+
+let result = question.Result();
+let p = result["p"];
+let q = result["q"];
+let pq = p * q;
+let value = "";
+
 //-----------------------------------------------
 
 //Line Bot--------------------------------
@@ -85,17 +93,23 @@ app.post("/webhook", async (c) => {
 
         //ユーザーの入力値が　event.message.text　である。
         const input: number = event.message.text;
-        const question = new Question();
-        const result = question.Result();
-        const p = result["p"];
-        const q = result["q"];
-        const pq = p * q;
+        if (input === p || input === q) {
+            value = "ok";
+        } else {
+            value = "no";
+        }
+
+        result = question.Result();
+        p = result["p"];
+        q = result["q"];
+        pq = p * q;
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
 
             messages: [
+                { type: "text", text: value },
                 { type: "text", text: pq },
             ],
         });
