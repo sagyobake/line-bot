@@ -24,9 +24,6 @@ const questionGenerator = () => {
     return question;
 };
 
-let question = questionGenerator();
-let result = "これは例題です。\n適当な値を入力して次の問題へ進んでください。";
-
 //Line Bot--------------------------------
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
 import {
@@ -59,7 +56,7 @@ app.post("/webhook", async (c) => {
             continue;
         }
 
-        const checkingAnswer = () => {
+        const checkingAnswer = (question, result) => {
             //ユーザの入力値を取得する
             const input = event.message.text;
 
@@ -70,8 +67,11 @@ app.post("/webhook", async (c) => {
             }
         };
 
-        checkingAnswer();
-        question = questionGenerator();
+        let question = questionGenerator();
+        let result =
+            "これは例題です。\n適当な値を入力して次の問題へ進んでください。";
+
+        checkingAnswer(question, result);
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
