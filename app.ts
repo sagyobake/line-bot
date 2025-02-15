@@ -91,18 +91,10 @@ app.post("/webhook", async (c) => {
             continue;
         }
 
-        // LINE bot SDKを用いて返信する
-        await client.replyMessage({
-            replyToken: event.replyToken,
-
-            messages: [
-                { type: "text", text: value },
-                { type: "text", text: pq },
-            ],
-        });
-
         //ユーザーの入力値が　event.message.text　である。
         const input = event.message.text;
+        console.log(input);
+        console.log(p, q);
         if (input === p || input === q) {
             value = "ok";
         } else {
@@ -113,6 +105,16 @@ app.post("/webhook", async (c) => {
         p = result["p"];
         q = result["q"];
         pq = p * q;
+
+        // LINE bot SDKを用いて返信する
+        await client.replyMessage({
+            replyToken: event.replyToken,
+
+            messages: [
+                { type: "text", text: value },
+                { type: "text", text: pq },
+            ],
+        });
     }
 
     return c.json({ status: "success" });
