@@ -24,8 +24,6 @@ const questionGenerator = () => {
     return question;
 };
 
-let question = questionGenerator();
-
 //Line Bot--------------------------------
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
 import {
@@ -60,6 +58,7 @@ app.post("/webhook", async (c) => {
 
         //ユーザの入力値を取得する
         const input = event.message.text;
+        let question = questionGenerator();
         let result = "";
 
         if (hangul_obj[input] === question) {
@@ -77,7 +76,6 @@ app.post("/webhook", async (c) => {
                 { type: "text", text: question },
             ],
         });
-
     }
 
     return c.json({ status: "success" });
