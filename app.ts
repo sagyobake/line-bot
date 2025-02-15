@@ -24,6 +24,9 @@ const questionGenerator = () => {
     return question;
 };
 
+let question = "hoge";
+let result = "hoge";
+
 //Line Bot--------------------------------
 import { Hono, type HonoRequest } from "jsr:@hono/hono@4.4.12";
 import {
@@ -56,20 +59,16 @@ app.post("/webhook", async (c) => {
             continue;
         }
 
-        const checkingAnswer = (input, question, result) => {
-            if (hangul_obj[input] === question) {
-                result = `正解　入力値:${hangul_obj[input]}　${question}`;
-            } else {
-                result = `不正解　入力値:${hangul_obj[input]}　${question}`;
-            }
-            return result;
-        };
+        const checkingAnswer = () => {
+            //ユーザの入力値を取得する
+            const input = event.message.text;
 
-        //ユーザの入力値を取得する
-        const input = event.message.text;
-        let question = questionGenerator();
-        let result = "";
-        checkingAnswer(input, question, result);
+            if (hangul_obj[input] === question) {
+                result = "ok";
+            } else {
+                result = "no";
+            }
+        };
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
@@ -80,6 +79,8 @@ app.post("/webhook", async (c) => {
                 { type: "text", text: question },
             ],
         });
+
+        question = questionGenerator();
     }
 
     return c.json({ status: "success" });
