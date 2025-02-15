@@ -87,7 +87,7 @@ app.post("/webhook", async (c) => {
         const input: number = event.message.text;
         const question = new Question();
         const result = question.Result();
-        const p = request["p"];
+        const p = result["p"];
         const q = result["q"];
         const pq = p * q;
 
@@ -96,7 +96,7 @@ app.post("/webhook", async (c) => {
             replyToken: event.replyToken,
 
             messages: [
-                { type: "text", text: 'hoge' },
+                { type: "text", text: pq },
             ],
         });
     }
