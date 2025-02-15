@@ -64,14 +64,9 @@ app.post("/webhook", async (c) => {
             const input = event.message.text;
 
             if (hangul_obj[input] === question) {
-                result = "正解！";
+                result = "正解(^o^)";
             } else {
-                const correct = Object.keys(hangul_obj).find((key) =>
-                    hangul_obj[key] === question
-                );
-                console.log(correct);
-
-                result = `不正解！　正解は ${correct} です。`;
+                result = "不正解(ﾟ∀ﾟ)";
             }
         };
 
