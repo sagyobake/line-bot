@@ -70,6 +70,8 @@ app.post("/webhook", async (c) => {
             }
         };
 
+        checkingAnswer();
+
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
             replyToken: event.replyToken,
