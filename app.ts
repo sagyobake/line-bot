@@ -105,7 +105,8 @@ app.post("/webhook", async (c) => {
         p = result["p"];
         q = result["q"];
         pq = p * q;
-        const next_question = `AまたはBに当てはまる値を1つ入力してください。\n
+        const next_question =
+            `AまたはBに当てはまる値を半角英数字で1つ入力してください。\n
         A × B = ${pq}
         `;
 
