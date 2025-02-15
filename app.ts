@@ -56,16 +56,20 @@ app.post("/webhook", async (c) => {
             continue;
         }
 
+        const checkingAnswer = (input, question, result) => {
+            if (hangul_obj[input] === question) {
+                result = `正解　入力値:${hangul_obj[input]}　${question}`;
+            } else {
+                result = `不正解　入力値:${hangul_obj[input]}　${question}`;
+            }
+            return result;
+        };
+
         //ユーザの入力値を取得する
         const input = event.message.text;
         let question = questionGenerator();
         let result = "";
-
-        if (hangul_obj[input] === question) {
-            result = `正解　入力値:${hangul_obj[input]}　${question}`;
-        } else {
-            result = `不正解　入力値:${hangul_obj[input]}　${question}`;
-        }
+        checkingAnswer(input, question, result);
 
         // LINE bot SDKを用いて返信する
         await client.replyMessage({
